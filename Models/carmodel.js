@@ -1,6 +1,6 @@
-const mongoos=require('mongoose')
+const mongoose=require('mongoose')
 
-const carSchema=new mongoos.Schema({
+const carSchema=new mongoose.Schema({
     title:{
         type:String,
         required:true
@@ -28,5 +28,5 @@ const carSchema=new mongoos.Schema({
 
 })
 
-const cars=mongoos.model("cars",carSchema)
+const cars=mongoose.model("cars",carSchema)
 module.exports=cars

@@ -1,6 +1,6 @@
-const mongoos = require('mongoose')
+const mongoose = require('mongoose')
 
-const userSchema = new mongoos.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true
@@ -17,15 +17,18 @@ const userSchema = new mongoos.Schema({
     profile: {
         type: String
     },
-    phone: {
-        type: String,
-        unique: true
-    },
+    phone:{
+        type : String
+        },
     license: {
-        type: String,
-        unique: true
+        type: String
+    },
+    role:{
+        type:String,
+        default:"user"
     }
 
 })
 
-const users=mongoos.model("users",userSchema)
+const users=mongoose.model("users",userSchema)
+module.exports=users

@@ -1,7 +1,7 @@
-const mongoos=require('mongoose')
+const mongoose=require('mongoose')
 
 
-const bookingSchema=new mongoos.Schema({
+const bookingSchema=new mongoose.Schema({
 userId:{
     type:String,
     required:true
@@ -33,5 +33,5 @@ transactionId:{
 
 })
 
-const bookings=mongoos.model("bookings",bookingSchema)
+const bookings=mongoose.model("bookings",bookingSchema)
 module.exports=bookings
