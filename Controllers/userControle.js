@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken")
 const users = require("../Models/usermodel")
 
 //registerlogic
@@ -38,7 +39,13 @@ exports.login = async (req, res) => {
     try{
         const user = await users.findOne({ email, password })
         if (user) {
-            res.status(200).json("Login success..!")
+            //token generation
+            const token=jwt.sign({userId:user._id},process.env.SECRET_KEY)
+            res.status(200).json({
+                user,
+                message:"Login success..!",
+                token
+            })
         }
         else {
             res.status(401).json("Incorrect email or password..!")
@@ -50,3 +57,4 @@ exports.login = async (req, res) => {
     }
 
 }
+
