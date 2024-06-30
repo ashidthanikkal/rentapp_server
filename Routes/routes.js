@@ -1,5 +1,5 @@
 const express=require('express')
-const { register, login } = require('../Controllers/userControle')
+const { register, login, bookcar } = require('../Controllers/userControle')
 const upload = require('../middlewares/multermiddleware')
 const { addCars } = require('../Controllers/adminControl')
 
@@ -15,6 +15,9 @@ router.post('/user/login',login)
 
 //add cars
 router.post('/admin/add-car',upload.single('carimage'),addCars)
+
+//bookings
+router.post('/user/booking',bookcar)
 
 module.exports=router
 

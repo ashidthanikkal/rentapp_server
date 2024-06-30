@@ -3,24 +3,17 @@ const mongoose=require('mongoose')
 
 const bookingSchema=new mongoose.Schema({
 userId:{
-    type:String,
-    required:true
+    type:mongoose.Schema.Types.ObjectID,
+    ref:'users'
 },
 carId:{
-    type:String,
-    required:true
+    type:mongoose.Schema.TypesObjectID,
+    ref:'cars'
 },
-
-bookedTimeSlot:{
-    from:{
-    type:String,
-    required:true
-    },
-    to:{
-    type:String,
-    required:true
-    }
-},
+bookedTimeSlot:[{
+    from : {type : String },
+    to:{type:String}
+}],
 days:{
     type:Number
 },
@@ -30,8 +23,9 @@ totalamount:{
 transactionId:{
     type:String
 }
-
-})
+},
+{timestamps : true}
+)
 
 const bookings=mongoose.model("bookings",bookingSchema)
 module.exports=bookings

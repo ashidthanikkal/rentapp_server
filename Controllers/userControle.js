@@ -36,25 +36,36 @@ exports.login = async (req, res) => {
 
     const { email, password } = req.body
 
-    try{
+    try {
         const user = await users.findOne({ email, password })
         if (user) {
             //token generation
-            const token=jwt.sign({userId:user._id},process.env.SECRET_KEY)
+            const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY)
             res.status(200).json({
                 user,
-                message:"Login success..!",
-                token
+                message: "Login success..!",
+                token,
+                role:user.role
             })
         }
         else {
             res.status(401).json("Incorrect email or password..!")
         }
     }
-    catch{
+    catch {
         res.status(400).json("Login api failed..!")
 
     }
 
+}
+
+
+//booking a car
+
+exports.bookcar = async (req, res) => {
+    req.body.transactionId = '1234'
+    const newbooking = new Booking(req.body)
+    await newbooking.save
+    res.status(200).json('Your booking is successfull')
 }
 
