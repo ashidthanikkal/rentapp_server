@@ -11,3 +11,17 @@ exports.addCars = (req, res) => {
     newCars.save()
     res.status(201).json(newCars)
 }
+
+exports.getAdminCars = async(req, res) => {
+
+    try {
+        const adminCars =await cars.find()
+        if (adminCars) {
+            res.status(200).json(adminCars)
+        }
+    }
+    catch {
+        res.status(400).json("get project api failed")
+    }
+
+}

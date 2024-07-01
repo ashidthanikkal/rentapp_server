@@ -14,6 +14,9 @@ require('./db/connection')
 
 app.use(router)
 
+//export upload folder to clientapp 
+app.use('/uploads',express.static('./uploads'))
+
 const PORT=4000 || process.env.PORT
 app.listen(PORT,()=>{
     console.log(`__________Porject Server Start At ${PORT}__________` );

@@ -1,7 +1,8 @@
 const express=require('express')
-const { register, login, bookcar } = require('../Controllers/userControle')
+const { register, login, bookcar, getUserCars, getBookingCar } = require('../Controllers/userControle')
 const upload = require('../middlewares/multermiddleware')
-const { addCars } = require('../Controllers/adminControl')
+const { addCars, getAdminCars } = require('../Controllers/adminControl')
+// const { jwtMiddleware } = require('../middlewares/jwtMiddleware')
 
 //create an object for router
 const router=new express.Router()
@@ -13,11 +14,17 @@ router.post('/user/register',register)
 //login
 router.post('/user/login',login)
 
-//add cars
+//admin add cars
 router.post('/admin/add-car',upload.single('carimage'),addCars)
 
-//bookings
-router.post('/user/booking',bookcar)
+//admin view card
+router.get('/admin/view-car',getAdminCars)
+
+//user view card
+router.get('/user/view-car',getUserCars)
+
+//bookingss
+router.get('/user/view-car/:id', getBookingCar);
 
 module.exports=router
 
