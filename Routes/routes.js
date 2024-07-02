@@ -1,8 +1,8 @@
 const express=require('express')
-const { register, login, bookcar, getUserCars, getBookingCar } = require('../Controllers/userControle')
+const { register, login, getBookingCar, getCars, createBooking } = require('../Controllers/userControle')
 const upload = require('../middlewares/multermiddleware')
-const { addCars, getAdminCars } = require('../Controllers/adminControl')
-// const { jwtMiddleware } = require('../middlewares/jwtMiddleware')
+const { addCars, viewUsers} = require('../Controllers/adminControl')
+const { jwtMiddleware } = require('../middlewares/jwtMiddleware')
 
 //create an object for router
 const router=new express.Router()
@@ -15,16 +15,20 @@ router.post('/user/register',register)
 router.post('/user/login',login)
 
 //admin add cars
-router.post('/admin/add-car',upload.single('carimage'),addCars)
+router.post('/admin/add-car',jwtMiddleware,upload.single('carimage'),addCars)
 
-//admin view card
-router.get('/admin/view-car',getAdminCars)
+// view car user and admin
+router.get('/view-car',getCars)
 
-//user view card
-router.get('/user/view-car',getUserCars)
+//view single car for booking
+router.get('/view-car/:id', getBookingCar);
 
-//bookingss
-router.get('/user/view-car/:id', getBookingCar);
+//view users for admin
+router.get('/view-users',viewUsers)
+
+//createBooking
+router.post('/booking/:carId',jwtMiddleware,createBooking);
+
 
 module.exports=router
 

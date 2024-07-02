@@ -24,8 +24,11 @@ const carSchema=new mongoose.Schema({
     carimage:{
         type:String,
         required:true
+    },
+    userId:{
+        type:String,
+        require:true
     }
-
 })
 
 const cars=mongoose.model("cars",carSchema)

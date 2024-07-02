@@ -7,7 +7,7 @@ userId:{
     ref:'users'
 },
 carId:{
-    type:mongoose.Schema.TypesObjectID,
+    type:mongoose.Schema.Types.ObjectID,
     ref:'cars'
 },
 bookedTimeSlot:[{
@@ -17,7 +17,7 @@ bookedTimeSlot:[{
 days:{
     type:Number
 },
-totalamount:{
+totalAmount:{
     type:Number
 },
 transactionId:{
