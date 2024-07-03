@@ -1,5 +1,5 @@
 const express=require('express')
-const { register, login, getBookingCar, getCars, createBooking } = require('../Controllers/userControle')
+const { register, login, getBookingCar, getCars, createBooking, editProfile } = require('../Controllers/userControle')
 const upload = require('../middlewares/multermiddleware')
 const { addCars, viewUsers, editCar, deleteCar} = require('../Controllers/adminControl')
 const { jwtMiddleware } = require('../middlewares/jwtMiddleware')
@@ -36,6 +36,10 @@ router.put('/admin/edit-car/:id',jwtMiddleware,upload.single('carimage'),editCar
 //delete car
 
 router.delete('/admin/delete-car/:id',jwtMiddleware,deleteCar)
+
+
+//edit user profile
+router.put('/user/edit-profile/:id',jwtMiddleware,upload.single('profile'),editProfile)
 
 
 module.exports=router

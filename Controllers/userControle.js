@@ -103,6 +103,7 @@ const isDateOverlap = (date1, date2) => {
     return (from1 <= to2 && from2 <= to1);
 };
 
+
 exports.createBooking = async (req, res) => {
     try {
         const { bookedTimeSlot, days, totalAmount, transactionId } = req.body;
@@ -147,3 +148,28 @@ exports.createBooking = async (req, res) => {
     }
 };
 
+//edit user profile
+
+exports.editProfile = async (req, res) => {
+    const { username, phone, license } = req.body;
+    const { id } = req.params; // changed from _id to id
+    const newProfile = req.file ? req.file.filename : req.body.profile; // fixed profile assignment from req.body
+
+    try {
+        const user = await users.findById(id); // changed findOne to findById
+
+        if (user) {
+            user.username = username;
+            user.phone = phone;
+            user.license = license;
+            user.profile = newProfile;
+
+            await user.save();
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error });
+    }
+};
