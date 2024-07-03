@@ -94,12 +94,35 @@ exports.getBookingCar = async (req, res) => {
 
 //booking a car
 
+const isDateOverlap = (date1, date2) => {
+    const from1 = new Date(date1.from.split('/').reverse().join('-'));
+    const to1 = new Date(date1.to.split('/').reverse().join('-'));
+    const from2 = new Date(date2.from.split('/').reverse().join('-'));
+    const to2 = new Date(date2.to.split('/').reverse().join('-'));
+
+    return (from1 <= to2 && from2 <= to1);
+};
+
 exports.createBooking = async (req, res) => {
     try {
         const { bookedTimeSlot, days, totalAmount, transactionId } = req.body;
         const userId = req.payload; // Assuming payload contains userId
         const { carId } = req.params; // Extract carId from params
-        console.log(userId);
+
+        const car = await cars.findById(carId);
+        if (!car) {
+            return res.status(404).json({ message: 'Car not found' });
+        }
+
+        // Check for conflicts
+        const conflict = car.bookedTimeSlots.some(slot =>
+            bookedTimeSlot.some(newSlot => isDateOverlap(newSlot, slot))
+        );
+
+        if (conflict) {
+            return res.status(400).json({ message: 'Selected time slot is already booked' });
+        }
+
         const newBooking = new bookings({
             userId,
             carId,
@@ -110,10 +133,16 @@ exports.createBooking = async (req, res) => {
         });
 
         const savedBooking = await newBooking.save();
+
+        // Update the car's booked time slots
+        await cars.findByIdAndUpdate(
+            carId,
+            { $push: { bookedTimeSlots: { $each: bookedTimeSlot } } },
+            { new: true }
+        );
+
         res.status(201).json(savedBooking);
     } catch (error) {
         res.status(500).json({ message: 'Error creating booking', error });
     }
 };
-
-
