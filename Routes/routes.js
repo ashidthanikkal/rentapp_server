@@ -1,7 +1,7 @@
 const express=require('express')
-const { register, login, getBookingCar, getCars, createBooking, editProfile } = require('../Controllers/userControle')
+const { register, login, getBookingCar, getCars, createBooking, editProfile, getUserBookings } = require('../Controllers/userControle')
 const upload = require('../middlewares/multermiddleware')
-const { addCars, viewUsers, editCar, deleteCar} = require('../Controllers/adminControl')
+const { addCars, viewUsers, editCar, deleteCar, getAllBookings} = require('../Controllers/adminControl')
 const { jwtMiddleware } = require('../middlewares/jwtMiddleware')
 
 //create an object for router
@@ -40,6 +40,12 @@ router.delete('/admin/delete-car/:id',jwtMiddleware,deleteCar)
 
 //edit user profile
 router.put('/user/edit-profile/:id',jwtMiddleware,upload.single('profile'),editProfile)
+
+//view booking details for admin
+router.get('/bookings', getAllBookings);
+
+//my bookings
+router.get('/user-bookings/:id', getUserBookings);
 
 
 module.exports=router

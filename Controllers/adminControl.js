@@ -1,3 +1,4 @@
+const bookings = require("../Models/bookingmodel")
 const cars = require("../Models/carmodel")
 const users = require("../Models/usermodel")
 
@@ -67,3 +68,38 @@ exports.viewUsers = async (req, res) => {
         res.status(400).json(error)
     }
 }
+
+
+//admin view bookings
+exports.getAllBookings = async (req, res) => {
+    try {
+      const Bookings = await bookings.find({})
+        .populate('userId', 'username phone')
+        .populate('carId', 'title rentamount');
+  
+      const bookingDetails = Bookings.map(booking => {
+        // Check if userId and carId are not null
+        const user = booking.userId || {};
+        const car = booking.carId || {};
+        
+        return {
+          username: user.username || 'N/A',
+          phone: user.phone || 'N/A',
+          carTitle: car.title || 'N/A',
+          rentPerDay: car.rentamount || 'N/A',
+          transactionId: booking.transactionId,
+          from: booking.bookedTimeSlot.map(slot => slot.from).join(', '),
+          to: booking.bookedTimeSlot.map(slot => slot.to).join(', '),
+          days: booking.days,
+          totalAmount: booking.totalAmount
+        };
+      });
+  
+      res.status(200).json(bookingDetails);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      res.status(500).json({ message: 'Error fetching bookings', error });
+    }
+  };
+  
+    

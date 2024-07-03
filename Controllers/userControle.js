@@ -173,3 +173,16 @@ exports.editProfile = async (req, res) => {
         res.status(500).json({ message: "Server error", error });
     }
 };
+
+//my bookings
+exports.getUserBookings = async (req, res) => {
+    try {
+        const {id} = req.params; // Assuming user ID is stored in req.user
+        const Bookings = await bookings.find( { _id: id } ).populate('carId');
+        res.status(200).json(Bookings);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching bookings', error });
+        console.log(req.user._id);
+    }
+};
+
