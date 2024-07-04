@@ -116,13 +116,13 @@ exports.createBooking = async (req, res) => {
         }
 
         // Check for conflicts
-        const conflict = car.bookedTimeSlots.some(slot =>
-            bookedTimeSlot.some(newSlot => isDateOverlap(newSlot, slot))
-        );
+        // const conflict = car.bookedTimeSlots.some(slot =>
+        //     bookedTimeSlot.some(newSlot => isDateOverlap(newSlot, slot))
+        // );
 
-        if (conflict) {
-            return res.status(400).json({ message: 'Selected time slot is already booked' });
-        }
+        // if (conflict) {
+        //     return res.status(400).json({ message: 'Selected time slot is already booked' });
+        // }
 
         const newBooking = new bookings({
             userId,
@@ -136,11 +136,11 @@ exports.createBooking = async (req, res) => {
         const savedBooking = await newBooking.save();
 
         // Update the car's booked time slots
-        await cars.findByIdAndUpdate(
-            carId,
-            { $push: { bookedTimeSlots: { $each: bookedTimeSlot } } },
-            { new: true }
-        );
+        // await cars.findByIdAndUpdate(
+        //     carId,
+        //     { $push: { bookedTimeSlots: { $each: bookedTimeSlot } } },
+        //     { new: true }
+        // );
 
         res.status(201).json(savedBooking);
     } catch (error) {

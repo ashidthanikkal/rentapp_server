@@ -115,6 +115,11 @@ exports.getAllBookings = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Booking not found.' });
         }
 
+        await cars.findByIdAndUpdate(
+            carId,
+            { $pull: { bookedTimeSlots: { $in: bookedTimeSlot } } },
+            { new: true }
+        );
         // Successful deletion
         res.json({ success: true, message: 'Booking deleted successfully.' });
     } catch (error) {

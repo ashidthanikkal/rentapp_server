@@ -28,13 +28,15 @@ const carSchema = new mongoose.Schema({
     userId: {
         type: String,
         require: true
-    },
-    bookedTimeSlots: [
+    }
+    ,
+    bookedTimeSlots: 
         {
-            from: { type: String },
-            to: { type: String }
+            type:Number,
+            default:0
+            // from: { type: String },
+            // to: { type: String }
         }
-    ]
 });
 
 const cars = mongoose.model('cars', carSchema);
