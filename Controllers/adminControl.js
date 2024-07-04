@@ -91,7 +91,8 @@ exports.getAllBookings = async (req, res) => {
           from: booking.bookedTimeSlot.map(slot => slot.from).join(', '),
           to: booking.bookedTimeSlot.map(slot => slot.to).join(', '),
           days: booking.days,
-          totalAmount: booking.totalAmount
+          totalAmount: booking.totalAmount,
+          bookingId:booking._id
         };
       });
   
@@ -101,5 +102,25 @@ exports.getAllBookings = async (req, res) => {
       res.status(500).json({ message: 'Error fetching bookings', error });
     }
   };
-  
+
+  //admin delete bookings
+  exports.deleteAdminBookings=async (req, res) => {
+    const id  = req.params.id;
+
+    try {
+        // Attempt to delete the booking by ID
+        const deletedBooking = await bookings.findByIdAndDelete(id);
+
+        if (!deletedBooking) {
+            return res.status(404).json({ success: false, message: 'Booking not found.' });
+        }
+
+        // Successful deletion
+        res.json({ success: true, message: 'Booking deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting booking:', error);
+        res.status(500).json({ success: false, message: 'Failed to delete booking.' });
+    }
+
+}
     

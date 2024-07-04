@@ -175,14 +175,34 @@ exports.editProfile = async (req, res) => {
 };
 
 //my bookings
+
 exports.getUserBookings = async (req, res) => {
     try {
-        const {id} = req.params; // Assuming user ID is stored in req.user
-        const Bookings = await bookings.find( { _id: id } ).populate('carId');
-        res.status(200).json(Bookings);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching bookings', error });
-        console.log(req.user._id);
-    }
-};
+        const userId = req.params.id;
 
+        // Find bookings associated with the userId
+        const Booking = await bookings.find({ userId }).populate('carId');
+
+        // Check if any bookings were found
+        if (!Booking || Booking.length === 0) {
+            return res.status(404).json({ message: 'No bookings found for the specified user ID.' });
+        }
+
+        // Transform the bookings to include the desired fields
+        const bookingDetails = Booking.map(booking => ({
+            bookingId:booking._id,
+            title: booking.carId.title,
+            rentamount: booking.carId.rentamount,
+            days: booking.days,
+            totalAmount: booking.totalAmount,
+            bookedTimeSlot: booking.bookedTimeSlot,
+            timestamp: booking.createdAt
+        }));
+
+        // Respond with the transformed booking details
+        res.status(200).json(bookingDetails);
+    } catch (error) {
+        console.error('Error fetching booking details:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
