@@ -30,13 +30,10 @@ router.get('/view-users',viewUsers)
 router.post('/booking/:carId',jwtMiddleware,createBooking);
 
 //edit car details
-
 router.put('/admin/edit-car/:id',jwtMiddleware,upload.single('carimage'),editCar)
 
 //delete car
-
 router.delete('/admin/delete-car/:id',jwtMiddleware,deleteCar)
-
 
 //edit user profile
 router.put('/user/edit-profile/:id',jwtMiddleware,upload.single('profile'),editProfile)
@@ -47,7 +44,7 @@ router.get('/bookings',jwtMiddleware, getAllBookings);
 //my bookings
 router.get('/user-bookings/:id',jwtMiddleware,getUserBookings)
 
-//delete admin bookings
+//delete admin/user bookings
 router.delete('/delete-booking/:id',jwtMiddleware,deleteAdminBookings)
 
 
