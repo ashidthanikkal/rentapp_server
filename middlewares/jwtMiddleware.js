@@ -17,7 +17,6 @@ exports.jwtMiddleware = (req, res, next) => {
         //exit from middleware function and continue
         next()
 
-
     }
     catch {
         res.status(401).json("authenticationfailed !plase login")

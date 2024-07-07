@@ -69,7 +69,6 @@ exports.viewUsers = async (req, res) => {
     }
 }
 
-
 //admin view bookings
 exports.getAllBookings = async (req, res) => {
     try {
@@ -104,7 +103,7 @@ exports.getAllBookings = async (req, res) => {
   };
 
   //admin delete bookings
-  exports.deleteAdminBookings=async (req, res) => {
+  exports.deleteBookings=async (req, res) => {
     const id  = req.params.id;
 
     try {
@@ -114,13 +113,6 @@ exports.getAllBookings = async (req, res) => {
         if (!deletedBooking) {
             return res.status(404).json({ success: false, message: 'Booking not found.' });
         }
-
-        await cars.findByIdAndUpdate(
-            carId,
-            { $pull: { bookedTimeSlots: { $in: bookedTimeSlot } } },
-            { new: true }
-        );
-        // Successful deletion
         res.json({ success: true, message: 'Booking deleted successfully.' });
     } catch (error) {
         console.error('Error deleting booking:', error);
